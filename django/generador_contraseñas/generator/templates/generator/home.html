@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de contraseñas</title>
+</head>
+
+<body>
+    <h1>Bienvenido al generador de contraseñas</h1>
+    <form action="password_gen">
+
+        <fieldset>
+            <legend>Desde este formulario podrás generar una contraseña de acuerdo a tus preferencias</legend>
+            <label for="length">Longitud:</label>
+            <input type="number" name="field_length" id="length">
+            <label for="mayusculas">Carácteres en mayúsculas</label>
+            <input type="checkbox" name="field_mayusculas" id="mayusculas">
+
+        </fieldset>
+        <input type="submit" value="Generar">
+    </form>
+</body>
+
+</html>

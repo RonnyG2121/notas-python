@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de administración de personas con Flask</title>
+</head>
+
+<body>
+    <h1>Sistema de administración de personas(SAP) con Flask</h1>
+
+    <div>
+        <p>Número de personas: {{personas_totales}}.</p>
+    </div>
+    <div>
+        <a href="/agregar">Agregar nueva persona</a>
+    </div>
+
+
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td>Nombre</td>
+                    <td>Ver detalles</td>
+                    <td>Editar</td>
+                    <td>Eliminar</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in personas %}
+                <tr>
+                    <td>{{p.nombre}} {{p.apellido}}</td>
+                    <td>
+                        <a href="ver_persona/{{p.id}}">Ver detalles de {{p.nombre}}</a>
+                    </td>
+                    <td>
+                        <a href="editar_persona/{{p.id}}">Editar datos de {{p.nombre}}</a>
+                    </td>
+                    <td>
+                        <a href="eliminar/{{p.id}}">Eliminar datos de {{p.nombre}}</a>
+                    </td>
+
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
