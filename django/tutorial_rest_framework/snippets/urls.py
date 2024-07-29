@@ -1,10 +1,14 @@
 from django.urls import path
 from snippets import views
+from rest_framework.urlpatterns import format_suffix_patterns
 
 
 urlpatterns = [
-    path('fragmentos/', views.listar_fragmentos),
-    path('fragmento/<int:pk>/', views.listar_un_fragmento),
-    path('actualizar-fragmento/<int:pk>/', views.actualizar_un_fragmento),
-    path('eliminar-fragmento/<int:pk>/', views.eliminar_un_fragmento),
+    path('fragmentos/', views.ListarFragmentos.as_view()),
+    path('fragmentos/<int:pk>/', views.DetallesFragmentos.as_view()),
+    path('usuarios/', views.ListaUsuarios.as_view()),
+    path('usuarios/<int:pk>/', views.DetalleUsuario.as_view()),
+
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)

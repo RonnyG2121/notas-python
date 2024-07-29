@@ -1,4 +1,5 @@
 from rest_framework import  serializers 
+from django.contrib.auth.models import User
 from snippets.models import Fragmento, seleccion_lenguajes, seleccion_estilos
 
 # Serializando la clase fragmento, creando nuevos y actualizándolos
@@ -31,7 +32,17 @@ class Serializador_fragmento(serializers.Serializer):
 # Simplificando con la clase meta y el ModelSerializer
 # Esto lo que hace es obtener todos los campos que ya están definidos en el modelo y assí lo simplifica ya que no tiene que crearlos en el serializador, solo llamar al modelo y llamar a los campos en una lista llamada fields
 
+
 class Serializador_fragmento(serializers.ModelSerializer):
+    creador = serializers.ReadOnlyField(source='creador.username')
     class Meta:
         model = Fragmento
-        fields = ['id', 'titulo', 'codigo', 'lineas', 'lenguaje', 'estilos']
+        fields = ['id', 'creador', 'titulo', 'codigo', 'lineas', 'lenguaje', 'estilos']
+
+
+class SerializadorUsuario(serializers.ModelSerializer):
+    fragmentos = serializers.PrimaryKeyRelatedField(many=True, queryset=Fragmento.objects.all())
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'fragmentos']
