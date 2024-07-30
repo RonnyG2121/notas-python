@@ -11,10 +11,13 @@ from rest_framework import permissions
 
 from snippets.models import Fragmento
 from snippets.serializers import Serializador_fragmento, SerializadorUsuario
+from snippets.permissions import PropietarioOVisitante
 
 # Create your views here.
 
 class ListarFragmentos(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          PropietarioOVisitante]
     queryset = Fragmento.objects.all()
     serializer_class = Serializador_fragmento
 
@@ -23,6 +26,8 @@ class ListarFragmentos(generics.ListCreateAPIView):
 
 
 class DetallesFragmentos(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          PropietarioOVisitante]
     queryset = Fragmento.objects.all()
     serializer_class = Serializador_fragmento
 
