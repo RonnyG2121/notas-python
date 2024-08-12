@@ -2,18 +2,37 @@
 
 from rest_framework.parsers import JSONParser
 from rest_framework import status
-# from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from django.contrib.auth.models import User
 from rest_framework import generics
 # from rest_framework.views import APIView
 from rest_framework import permissions
+from rest_framework import renderers
 
 from snippets.models import Fragmento
 from snippets.serializers import Serializador_fragmento, SerializadorUsuario
 from snippets.permissions import PropietarioOVisitante
 
 # Create your views here.
+
+
+@api_view(['GET'])
+def inicio(request, format=None):
+    return Response(
+        {
+            'usuario': reverse('lista-usuario', request=request, format=format),
+            'fragmento': reverse('lista-fragmento', request=request, format=format)})
+
+class FragmentoResaltado(generics.GenericAPIView):
+    queryset = Fragmento.objects.all()
+    renderer_classes = [renderers.StaticHTMLRenderer]
+
+    def get(self, request, *args, **kwargs):
+        fragmentos = self.get_object()
+        return Response(fragmentos.resaltador)
+
 
 class ListarFragmentos(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,

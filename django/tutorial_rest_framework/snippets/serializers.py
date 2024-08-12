@@ -33,16 +33,23 @@ class Serializador_fragmento(serializers.Serializer):
 # Esto lo que hace es obtener todos los campos que ya están definidos en el modelo y assí lo simplifica ya que no tiene que crearlos en el serializador, solo llamar al modelo y llamar a los campos en una lista llamada fields
 
 
-class Serializador_fragmento(serializers.ModelSerializer):
+class Serializador_fragmento(serializers.HyperlinkedModelSerializer):
+    # url = serializers.HyperlinkedIdentityField(view_name='detalle-usuarios')
     creador = serializers.ReadOnlyField(source='creador.username')
+    resaltador = serializers.HyperlinkedIdentityField(view_name='fragmento-resaltado', format='html')
     class Meta:
         model = Fragmento
-        fields = ['id', 'creador', 'titulo', 'codigo', 'lineas', 'lenguaje', 'estilos']
+        fields = ['url', 'id', 'resaltador', 'creador', 'titulo', 'codigo', 'lineas', 'lenguaje', 'estilos']
+        extra_kwargs = {
+            'url': {'view_name': 'detalles-fragmentos', 'lookup_field': 'pk'},}
 
 
-class SerializadorUsuario(serializers.ModelSerializer):
-    fragmentos = serializers.PrimaryKeyRelatedField(many=True, queryset=Fragmento.objects.all())
+class SerializadorUsuario(serializers.HyperlinkedModelSerializer):
+    # url = serializers.HyperlinkedIdentityField(view_name="")
+    fragmento = serializers.HyperlinkedRelatedField(many=True, view_name='detalles-fragmentos', read_only=True)
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'fragmentos']
+        fields = ['url', 'id', 'username', 'fragmento']
+        extra_kwargs = {
+            'url': {'view_name': 'detalle-usuario', 'lookup_field': 'pk'},}
