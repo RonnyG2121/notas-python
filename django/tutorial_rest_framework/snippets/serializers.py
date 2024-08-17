@@ -36,20 +36,20 @@ class Serializador_fragmento(serializers.Serializer):
 class Serializador_fragmento(serializers.HyperlinkedModelSerializer):
     # url = serializers.HyperlinkedIdentityField(view_name='detalle-usuarios')
     creador = serializers.ReadOnlyField(source='creador.username')
-    resaltador = serializers.HyperlinkedIdentityField(view_name='fragmento-resaltado', format='html')
+    resaltador = serializers.HyperlinkedIdentityField(view_name='fragmento-detail', format='html', )
     class Meta:
         model = Fragmento
         fields = ['url', 'id', 'resaltador', 'creador', 'titulo', 'codigo', 'lineas', 'lenguaje', 'estilos']
         extra_kwargs = {
-            'url': {'view_name': 'detalles-fragmentos', 'lookup_field': 'pk'},}
+            'url': {'view_name': 'fragmento-detail', 'lookup_field': 'pk'},}
 
 
 class SerializadorUsuario(serializers.HyperlinkedModelSerializer):
     # url = serializers.HyperlinkedIdentityField(view_name="")
-    fragmento = serializers.HyperlinkedRelatedField(many=True, view_name='detalles-fragmentos', read_only=True)
+    fragmento = serializers.HyperlinkedRelatedField(many=True, view_name='fragmento-detail', lookup_field ='pk', read_only=True)
 
     class Meta:
         model = User
         fields = ['url', 'id', 'username', 'fragmento']
         extra_kwargs = {
-            'url': {'view_name': 'detalle-usuario', 'lookup_field': 'pk'},}
+            'url': {'view_name': 'usuario-detail', 'lookup_field': 'pk'},}

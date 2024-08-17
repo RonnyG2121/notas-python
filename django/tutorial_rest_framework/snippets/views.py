@@ -1,15 +1,9 @@
-# from django.shortcuts import render
-
-from rest_framework.parsers import JSONParser
-from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework import status, permissions, generics, renderers, viewsets
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from django.contrib.auth.models import User
-from rest_framework import generics
-# from rest_framework.views import APIView
-from rest_framework import permissions
-from rest_framework import renderers
+from rest_framework.views import APIView
 
 from snippets.models import Fragmento
 from snippets.serializers import Serializador_fragmento, SerializadorUsuario
@@ -25,16 +19,42 @@ def inicio(request, format=None):
             'usuario': reverse('lista-usuario', request=request, format=format),
             'fragmento': reverse('lista-fragmento', request=request, format=format)})
 
-class FragmentoResaltado(generics.GenericAPIView):
+
+class VistaFragmentos(viewsets.ModelViewSet):
+    queryset = Fragmento.objects.all()
+    serializer_class = Serializador_fragmento
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          PropietarioOVisitante]
+    lookup_field = 'pk'
+
+    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    def resaltador(self, request, *args, **kwargs):
+        fragmentos = self.get_object()
+        return Response(fragmentos.resaltador)
+
+    def perform_create(self, serializer):
+        serializer.save(creador=self.request.user)
+
+
+
+class VistaUsuarios(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = SerializadorUsuario
+
+
+# Aquí inician las vistas antitguamente utilizadas
+""" class FragmentoResaltado(generics.GenericAPIView):
     queryset = Fragmento.objects.all()
     renderer_classes = [renderers.StaticHTMLRenderer]
 
     def get(self, request, *args, **kwargs):
         fragmentos = self.get_object()
         return Response(fragmentos.resaltador)
+ """
 
 
-class ListarFragmentos(generics.ListCreateAPIView):
+
+""" class ListarFragmentos(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           PropietarioOVisitante]
     queryset = Fragmento.objects.all()
@@ -42,24 +62,32 @@ class ListarFragmentos(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(creador=self.request.user)
+ """
 
 
-class DetallesFragmentos(generics.RetrieveUpdateDestroyAPIView):
+
+""" class DetallesFragmentos(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
                           PropietarioOVisitante]
     queryset = Fragmento.objects.all()
     serializer_class = Serializador_fragmento
+"""
 
 
-class ListaUsuarios(generics.ListAPIView):
+
+""" class ListaUsuarios(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = SerializadorUsuario
+
+ """
+
+
+""" class DetalleUsuario(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = SerializadorUsuario
 
 
-class DetalleUsuario(generics.RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = SerializadorUsuario
-
+ """
 
 
 """
@@ -67,7 +95,6 @@ class ListarFragmentos(APIView):
     
     # Obtiene una lista de todos los fragmmentos o crea un fragmento
     
-
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         fragmentos = Fragmento.objects.all()
