@@ -1,6 +1,6 @@
-# Recopilación de práctivas en mi aprendizaje de python
+# Recopilación de prácticas en mi aprendizaje de python
 
-Este repositorio contiene todo lo relacionado a mis práctivas con python. Desde lo más básico hasta lo más avanzado que he logrado hasta ahora.
+Este repositorio contiene todo lo relacionado a mis prácticas con python. Desde lo más básico hasta lo más avanzado que he logrado hasta ahora.
 
 Seguiré agregando más ejemplos. Esto contiene una ruta de carpetas donde hay archivos con el código de los ejemplos.
 
