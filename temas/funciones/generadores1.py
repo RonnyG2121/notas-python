@@ -11,7 +11,7 @@ def DevuelvePares(limite):
 
 
 pares = DevuelvePares(10)
-print(DevuelvePares(10))
+# print(next(pares))
 extrae_Pares = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 for i in extrae_Pares:
     print(next(pares))
