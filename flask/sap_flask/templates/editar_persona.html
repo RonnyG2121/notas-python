@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar persona</title>
+</head>
+
+<body>
+    <h1>Actualizar datos de la persona</h1>
+
+    <div>
+        <form method="post" action="">
+            {{formulario.csrf_token}}
+            <div>
+                {{formulario.nombre.label}} <br>
+                {{formulario.nombre(sice=30)}}
+            </div>
+            <div>
+                {{formulario.apellido.label}} <br>
+                {{formulario.apellido(sice=30)}}
+            </div>
+            <div>
+                {{formulario.email.label}} <br>
+                {{formulario.email(sice=30)}}
+            </div>
+
+            <div>
+                {{formulario.enviar()}}
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>

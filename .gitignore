@@ -1,0 +1,8 @@
+*.env/
+*.code-workspace
+*venv/
+*.venv/
+*__pycache__/
+*.env
+*.python-version
+*.cfg
